@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="textViewSize">16sp</dimen>
+    <dimen name="textViewErrorSize">24sp</dimen>
+    <dimen name="textViewSecondActivity">16sp</dimen>
+    <dimen name="marginTopRecycle">5dp</dimen>
+    <dimen name="smallfixmargin">10dp</dimen>
+    <dimen name="zerosize">0dp</dimen>
+    <dimen name="glidemarginBottom">235dp</dimen>
+    <dimen name="glidemargintop">12dp</dimen>
+    <dimen name="margintoperror">8dp</dimen>
+    <dimen name="errorimagesize">60dp</dimen>
+</resources>

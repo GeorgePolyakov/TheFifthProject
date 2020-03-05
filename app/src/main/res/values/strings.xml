@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">TheThirdApplication</string>
+    <string name="error_text">Что-то пошло не так</string>
+</resources>
