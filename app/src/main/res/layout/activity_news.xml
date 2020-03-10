@@ -48,8 +48,8 @@
 
     <ImageView
         android:id="@+id/glideImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginLeft="@dimen/smallfixmargin"
         android:layout_marginTop="@dimen/glidemargintop"
         android:layout_marginRight="@dimen/smallfixmargin"
@@ -65,8 +65,8 @@
 
     <ImageView
         android:id="@+id/picassoImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginLeft="@dimen/smallfixmargin"
         android:layout_marginTop="@dimen/smallfixmargin"
         android:layout_marginRight="@dimen/smallfixmargin"

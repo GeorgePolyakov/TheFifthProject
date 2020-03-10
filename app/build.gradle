@@ -4,6 +4,18 @@ android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
     defaultConfig {
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [
+                        // here go the options for Moxy compiler
+                        disableEmptyStrategyCheck: 'true'
+                ]
+            }
+        }
+        compileOptions {
+            sourceCompatibility JavaVersion.VERSION_1_8
+            targetCompatibility JavaVersion.VERSION_1_8
+        }
         applicationId "com.example.thethirdapplication"
         minSdkVersion 15
         targetSdkVersion 29
@@ -34,6 +46,8 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
     implementation group: 'com.squareup.picasso', name: 'picasso', version: '2.5.2'
-    compileOnly 'org.projectlombok:lombok:1.18.12'
-    annotationProcessor 'org.projectlombok:lombok:1.18.12'
+    implementation 'com.github.moxy-community:moxy:2.1.1'
+    implementation 'com.github.moxy-community:moxy-material:2.1.1'
+    annotationProcessor 'com.github.moxy-community:moxy-compiler:2.1.1'
+    implementation "com.github.moxy-community:moxy-androidx:2.1.1"
 }
