@@ -12,14 +12,20 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+
 @InjectViewState
-public class NewsPresenter extends MvpPresenter<NewsView> {
-
+public class MainPresenter extends MvpPresenter<MainView>  {
     private Call<MainResponse> listCall;
-
     private RetrofitInterface retrofitInterface;
+    private int keyTheme;
 
-    public void setListCall(int keyTheme) {
+
+    public void ShowError() {
+        getViewState().showError("Ошибка");
+    }
+
+    public void Refresh(int keyTheme) {
+
         retrofitInterface = RetrofitInstance.getRetrofitInstance().create(RetrofitInterface.class);
         switch (keyTheme) {
             case 0:
@@ -48,16 +54,19 @@ public class NewsPresenter extends MvpPresenter<NewsView> {
         listCall.enqueue(new Callback<MainResponse>() {
             @Override
             public void onResponse(Call<MainResponse> call, Response<MainResponse> response) {
-                getViewState().parseData(response);
-
+                Log.i("myTag", response.raw() + "");
+                getViewState().parseData(response.body().getArticles());
             }
 
             @Override
             public void onFailure(Call<MainResponse> call, Throwable t) {
                 Log.i("myTag", t + "");
+                ShowError();
             }
 
         });
     }
 
 }
+
+

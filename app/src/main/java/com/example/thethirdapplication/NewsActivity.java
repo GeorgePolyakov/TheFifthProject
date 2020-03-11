@@ -10,17 +10,25 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.thethirdapplication.models.Articles;
 import com.example.thethirdapplication.models.MainResponse;
 import com.example.thethirdapplication.retrofit.RetrofitInstance;
 import com.example.thethirdapplication.retrofit.RetrofitInterface;
 
+import moxy.MvpAppCompatActivity;
+import moxy.presenter.InjectPresenter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 import com.squareup.picasso.Picasso;
 
-public class NewsActivity extends AppCompatActivity {
+import java.util.List;
+
+public class NewsActivity extends MvpAppCompatActivity implements NewsView{
+
+    @InjectPresenter
+    NewsPresenter newsPresenter;
 
     private int position;
     private int keyTheme;
@@ -31,14 +39,24 @@ public class NewsActivity extends AppCompatActivity {
     private TextView descriptionTextView;
     private ImageView glideImageView;
     private ImageView picassoImageView;
+    private Response<MainResponse> response;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
         initValues();
-        setListCall(keyTheme);
-        sendResponse();
+        newsPresenter.setListCall(keyTheme);
+    }
+
+    @Override
+    public void parseData(Response<MainResponse> response) {
+
+        titleTextView.setText(response.body().getArticles().get(position).getTitle() + "");
+        sourceTextView.setText(response.body().getArticles().get(position).getSource().getName() + "");
+        descriptionTextView.setText(response.body().getArticles().get(position).getDescription() + "");
+        callGlide(response);
+        callPicasso(response);
     }
 
     public void initValues() {
@@ -50,53 +68,6 @@ public class NewsActivity extends AppCompatActivity {
         position = getIntent().getIntExtra("key", 0);
         keyTheme = getIntent().getIntExtra("keyTheme", 0);
         retrofitInterface = RetrofitInstance.getRetrofitInstance().create(RetrofitInterface.class);
-    }
-
-    public void setListCall(int keyTheme) {
-        switch (keyTheme) {
-            case 0:
-                listCall = retrofitInterface.getAllSoftwareNews(NewsUtility.getSpecificDate(), NewsUtility.apiKey);
-                break;
-            case 1:
-                listCall = retrofitInterface.getAllBitcoinNews(NewsUtility.getSpecificDate(), NewsUtility.apiKey);
-                break;
-            case 2:
-                listCall = retrofitInterface.businessOfUsa(NewsUtility.apiKey);
-                break;
-            case 3:
-                listCall = retrofitInterface.getAllAppleNews(NewsUtility.apiKey);
-                break;
-            case 4:
-                listCall = retrofitInterface.techCrunch(NewsUtility.apiKey);
-                break;
-            case 5:
-                listCall = retrofitInterface.wallStreetJournal(NewsUtility.apiKey);
-                break;
-            default:
-                listCall = retrofitInterface.getAllSoftwareNews(NewsUtility.getSpecificDate(), NewsUtility.apiKey);
-                break;
-        }
-    }
-
-    public void sendResponse() {
-        listCall.enqueue(new Callback<MainResponse>() {
-            @Override
-            public void onResponse(Call<MainResponse> call, Response<MainResponse> response) {
-
-                Log.i("myTag", response.body().getArticles().get(position).getAuthor() + "");
-                titleTextView.setText(response.body().getArticles().get(position).getTitle() + "");
-                sourceTextView.setText(response.body().getArticles().get(position).getSource().getName() + "");
-                descriptionTextView.setText(response.body().getArticles().get(position).getDescription() + "");
-                callGlide(response);
-                callPicasso(response);
-            }
-
-            @Override
-            public void onFailure(Call<MainResponse> call, Throwable t) {
-                Log.i("myTag", t + "");
-            }
-
-        });
     }
 
     public void callGlide(Response<MainResponse> response) {

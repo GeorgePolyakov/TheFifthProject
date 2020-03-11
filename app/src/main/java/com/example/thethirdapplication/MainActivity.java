@@ -21,13 +21,11 @@ import java.util.List;
 import moxy.MvpAppCompatActivity;
 import moxy.presenter.InjectPresenter;
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
-public class MainActivity extends MvpAppCompatActivity implements NewsView, AdapterView.OnItemSelectedListener, SwipeRefreshLayout.OnRefreshListener, NewsRecyclerViewAdapter.OnRecycleViewNewsListener {
+public class MainActivity extends MvpAppCompatActivity implements MainView, AdapterView.OnItemSelectedListener, SwipeRefreshLayout.OnRefreshListener, NewsRecyclerViewAdapter.OnRecycleViewNewsListener {
 
     @InjectPresenter
-    NewsPresenter newsPresenter;
+    MainPresenter mainPresenter;
 
     private NewsRecyclerViewAdapter newsRecyclerViewAdapter;
     private RecyclerView rvMain;
@@ -44,21 +42,50 @@ public class MainActivity extends MvpAppCompatActivity implements NewsView, Adap
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mErrorView = findViewById(R.id.error_view);
         initViewSwipeToRefresh();
         fillSpinnerAdapter();
         spinnerTheme.setOnItemSelectedListener(this);
-        onRefresh();
+         onRefresh();
     }
 
-     @Override
-     public void parseData(List<Articles> body) {
+    @Override
+    public void parseData(List<Articles> body) {
         if (!recycleFlag) {
             newsRecyclerViewAdapter = new NewsRecyclerViewAdapter(body, this);
             rvMain.setAdapter(newsRecyclerViewAdapter);
             recycleFlag = true;
         } else {
             newsRecyclerViewAdapter.updateList(body);
+        }
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        keyTheme = position;
+        onRefresh();
+        Log.d("myTag", "pizda1" + position + "");
+        Log.d("myTag", "pizda" + keyTheme + "");
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        // @Nothing TODO
+    }
+
+    @Override
+    public void showError(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void startLoading() {
+        mainPresenter.Refresh(keyTheme);
+    }
+
+    @Override
+    public void finishLoading() {
+        if (mSwipeRefreshLayout.isRefreshing()) {
+            mSwipeRefreshLayout.setRefreshing(false);
         }
     }
 
@@ -71,11 +98,8 @@ public class MainActivity extends MvpAppCompatActivity implements NewsView, Adap
 
     @Override
     public void onRefresh() {
-        newsPresenter.Refresh();
-
-        if (mSwipeRefreshLayout.isRefreshing()) {
-            mSwipeRefreshLayout.setRefreshing(false);
-        }
+        startLoading();
+        finishLoading();
     }
 
     public void fillSpinnerAdapter() {
@@ -93,86 +117,11 @@ public class MainActivity extends MvpAppCompatActivity implements NewsView, Adap
         spinnerTheme.setAdapter(adapter);
     }
 
-
-   /* private void showHideError(boolean state) {
-        if (state) {
-            mErrorView.setVisibility(View.GONE);
-            rvMain.setVisibility(View.VISIBLE);
-            spinnerTheme.setVisibility(View.VISIBLE);
-        } else {
-            rvMain.setVisibility(View.GONE);
-            mErrorView.setVisibility(View.VISIBLE);
-            spinnerTheme.setVisibility(View.GONE);
-        }
-    }*/
-
     @Override
     public void onNewsRecycleClick(int key) {
         Intent intent = new Intent(this, NewsActivity.class);
         intent.putExtra("key", key);
         intent.putExtra("keyTheme", keyTheme);
         startActivity(intent);
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        keyTheme = position;
-        onRefresh();
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
-
-    @Override
-    public void showNews() {
-
-    }
-
-    @Override
-    public Call<MainResponse> getResponse() {
-        retrofitInterface = RetrofitInstance.getRetrofitInstance().create(RetrofitInterface.class);
-        switch (keyTheme) {
-            case 0:
-                listCall = retrofitInterface.getAllSoftwareNews(NewsUtility.getSpecificDate(), NewsUtility.apiKey);
-                break;
-            case 1:
-                listCall = retrofitInterface.getAllBitcoinNews(NewsUtility.getSpecificDate(), NewsUtility.apiKey);
-                break;
-            case 2:
-                listCall = retrofitInterface.businessOfUsa(NewsUtility.apiKey);
-                break;
-            case 3:
-                listCall = retrofitInterface.getAllAppleNews(NewsUtility.apiKey);
-                break;
-            case 4:
-                listCall = retrofitInterface.techCrunch(NewsUtility.apiKey);
-                break;
-            case 5:
-                listCall = retrofitInterface.wallStreetJournal(NewsUtility.apiKey);
-                break;
-            default:
-                listCall = retrofitInterface.getAllSoftwareNews(NewsUtility.getSpecificDate(), NewsUtility.apiKey);
-                break;
-        }
-        return listCall;
-    }
-
-    @Override
-    public void showError(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void startLoading() {
-
-
-        }
-
-
-    @Override
-    public void finishLoading() {
-
     }
 }

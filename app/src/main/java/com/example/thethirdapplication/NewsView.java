@@ -1,6 +1,5 @@
 package com.example.thethirdapplication;
 
-import com.example.thethirdapplication.AddToEndSingleByTagStateStrategy;
 import com.example.thethirdapplication.models.Articles;
 import com.example.thethirdapplication.models.MainResponse;
 
@@ -10,25 +9,13 @@ import moxy.MvpView;
 import moxy.viewstate.strategy.AddToEndSingleStrategy;
 import moxy.viewstate.strategy.OneExecutionStateStrategy;
 import moxy.viewstate.strategy.StateStrategyType;
-import retrofit2.Call;
+import retrofit2.Response;
 
 @StateStrategyType(AddToEndSingleStrategy.class)
-public interface NewsView  extends MvpView {
-
-    String TAG_LOADING_COMMAND = "tagLoadingCommand";
-    void  showNews();
-
-    void parseData(List<Articles> body);
-
-    Call<MainResponse> getResponse();
+interface NewsView extends MvpView {
 
     @StateStrategyType(OneExecutionStateStrategy.class)
-    void showError(String message);
+    void parseData(Response<MainResponse> response);
 
-    @StateStrategyType(value = AddToEndSingleByTagStateStrategy.class, tag = TAG_LOADING_COMMAND)
-    void startLoading();
-
-    @StateStrategyType(value = AddToEndSingleByTagStateStrategy.class, tag = TAG_LOADING_COMMAND)
-    void finishLoading();
 
 }
