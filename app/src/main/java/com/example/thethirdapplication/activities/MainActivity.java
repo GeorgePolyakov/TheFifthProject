@@ -64,8 +64,6 @@ public class MainActivity extends MvpAppCompatActivity implements MainView, Adap
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         keyTheme = position;
         onRefresh();
-        Log.d("myTag", "pizda1" + position + "");
-        Log.d("myTag", "pizda" + keyTheme + "");
     }
 
     @Override
