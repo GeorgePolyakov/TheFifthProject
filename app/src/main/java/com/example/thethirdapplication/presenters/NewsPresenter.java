@@ -1,10 +1,12 @@
-package com.example.thethirdapplication;
+package com.example.thethirdapplication.presenters;
 
 import android.util.Log;
 
+import com.example.thethirdapplication.NewsUtility;
 import com.example.thethirdapplication.models.MainResponse;
 import com.example.thethirdapplication.retrofit.RetrofitInstance;
 import com.example.thethirdapplication.retrofit.RetrofitInterface;
+import com.example.thethirdapplication.views.NewsView;
 
 import moxy.InjectViewState;
 import moxy.MvpPresenter;
@@ -49,14 +51,12 @@ public class NewsPresenter extends MvpPresenter<NewsView> {
             @Override
             public void onResponse(Call<MainResponse> call, Response<MainResponse> response) {
                 getViewState().parseData(response);
-
             }
 
             @Override
             public void onFailure(Call<MainResponse> call, Throwable t) {
                 Log.i("myTag", t + "");
             }
-
         });
     }
 

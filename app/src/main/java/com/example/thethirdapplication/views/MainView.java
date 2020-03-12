@@ -1,5 +1,6 @@
-package com.example.thethirdapplication;
+package com.example.thethirdapplication.views;
 
+import com.example.thethirdapplication.AddToEndSingleByTagStateStrategy;
 import com.example.thethirdapplication.models.Articles;
 import java.util.List;
 import moxy.MvpView;

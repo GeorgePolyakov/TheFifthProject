@@ -1,16 +1,12 @@
-package com.example.thethirdapplication;
+package com.example.thethirdapplication.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.thethirdapplication.models.Articles;
+import com.example.thethirdapplication.presenters.NewsPresenter;
+import com.example.thethirdapplication.R;
 import com.example.thethirdapplication.models.MainResponse;
 import com.example.thethirdapplication.retrofit.RetrofitInstance;
 import com.example.thethirdapplication.retrofit.RetrofitInterface;
@@ -18,14 +14,12 @@ import com.example.thethirdapplication.retrofit.RetrofitInterface;
 import moxy.MvpAppCompatActivity;
 import moxy.presenter.InjectPresenter;
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 
+import com.example.thethirdapplication.views.NewsView;
 import com.squareup.picasso.Picasso;
 
-import java.util.List;
-
-public class NewsActivity extends MvpAppCompatActivity implements NewsView{
+public class NewsActivity extends MvpAppCompatActivity implements NewsView {
 
     @InjectPresenter
     NewsPresenter newsPresenter;

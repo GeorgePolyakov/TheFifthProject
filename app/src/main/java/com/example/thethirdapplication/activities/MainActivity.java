@@ -1,7 +1,11 @@
-package com.example.thethirdapplication;
+package com.example.thethirdapplication.activities;
 
+import com.example.thethirdapplication.presenters.MainPresenter;
+import com.example.thethirdapplication.NewsRecyclerViewAdapter;
+import com.example.thethirdapplication.R;
 import com.example.thethirdapplication.models.*;
 import com.example.thethirdapplication.retrofit.*;
+import com.example.thethirdapplication.views.MainView;
 
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -29,10 +33,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView, Adap
 
     private NewsRecyclerViewAdapter newsRecyclerViewAdapter;
     private RecyclerView rvMain;
-    private Call<MainResponse> listCall;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private RetrofitInterface retrofitInterface;
-    private View mErrorView;
     private Spinner spinnerTheme;
     private List<String> themesNewsList;
     private int keyTheme = 0;
@@ -70,6 +71,14 @@ public class MainActivity extends MvpAppCompatActivity implements MainView, Adap
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
         // @Nothing TODO
+    }
+
+    @Override
+    public void onNewsRecycleClick(int key) {
+        Intent intent = new Intent(this, NewsActivity.class);
+        intent.putExtra("key", key);
+        intent.putExtra("keyTheme", keyTheme);
+        startActivity(intent);
     }
 
     @Override
@@ -115,13 +124,5 @@ public class MainActivity extends MvpAppCompatActivity implements MainView, Adap
                 android.R.layout.simple_spinner_item, themesNewsList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerTheme.setAdapter(adapter);
-    }
-
-    @Override
-    public void onNewsRecycleClick(int key) {
-        Intent intent = new Intent(this, NewsActivity.class);
-        intent.putExtra("key", key);
-        intent.putExtra("keyTheme", keyTheme);
-        startActivity(intent);
     }
 }

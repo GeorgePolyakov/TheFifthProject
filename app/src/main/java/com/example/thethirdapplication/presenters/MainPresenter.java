@@ -1,10 +1,12 @@
-package com.example.thethirdapplication;
+package com.example.thethirdapplication.presenters;
 
 import android.util.Log;
 
+import com.example.thethirdapplication.NewsUtility;
 import com.example.thethirdapplication.models.MainResponse;
 import com.example.thethirdapplication.retrofit.RetrofitInstance;
 import com.example.thethirdapplication.retrofit.RetrofitInterface;
+import com.example.thethirdapplication.views.MainView;
 
 import moxy.InjectViewState;
 import moxy.MvpPresenter;
@@ -15,13 +17,13 @@ import retrofit2.Response;
 
 @InjectViewState
 public class MainPresenter extends MvpPresenter<MainView>  {
+
     private Call<MainResponse> listCall;
     private RetrofitInterface retrofitInterface;
-    private int keyTheme;
 
+    public void ShowError(String s) {
 
-    public void ShowError() {
-        getViewState().showError("Ошибка");
+        getViewState().showError(s);
     }
 
     public void Refresh(int keyTheme) {
@@ -61,7 +63,7 @@ public class MainPresenter extends MvpPresenter<MainView>  {
             @Override
             public void onFailure(Call<MainResponse> call, Throwable t) {
                 Log.i("myTag", t + "");
-                ShowError();
+                ShowError("Error");
             }
 
         });
